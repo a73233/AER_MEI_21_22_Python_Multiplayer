@@ -1,5 +1,4 @@
-# AER_MEI_21_22_Python_Multiplayer
- Jogo multiplayer em python IPv6 UDP
+# AER_MEI_21_22_Py_Mp
 
  Dont forget to:
 
