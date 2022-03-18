@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-# AER_MEI_21_22_Py_Mp
-=======
 # AER_MEI_21_22_Py_Mp
 
->>>>>>> 72a49144a0105fe9d8cdde6d7dad81ab81b80466
  Dont forget to:
 
  pip install pygame
