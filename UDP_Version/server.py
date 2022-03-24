@@ -27,39 +27,46 @@ idCount = 0
 def threaded_client(msg, addr, p, gameId):
     global idCount
 
-    while True:
-        try:
+        #while True:
+        #try:
             #data = conn.recv(bufferSize*2).decode()
-            data = msg
+    data = msg
 
-            if gameId in games:
-                game = games[gameId]
+    if gameId in games:
+        game = games[gameId]
 
-                if not data:
-                    break
-                else:
-                    if data == "reset":
-                        game.resetWent()
-                    elif data != "get":
-                        game.play(p, data)
+        if data:   
+            if data == "Bye Server!":
+                try:
+                    del games[gameId]
+                    print("Closing Game", gameId)
+                except:
+                    pass
+                idCount -= 1
 
-                    pickled_data = pickle.dumps(game)
-                    #print(pickled_data)
-                    s.sendto(pickled_data, addr)
-                    #print("just pickled")
-            else:
-                break
-        except:
-            print("Exeception occurred within the threaded_client")
-            break
+            elif data == "reset":
+                game.resetWent()
 
-    print("Lost connection")
-    try:
-        del games[gameId]
-        print("Closing Game", gameId)
-    except:
-        pass
-    idCount -= 1
+            elif data != "get":
+                game.play(p, data)
+
+            pickled_data = pickle.dumps(game)
+            #print(pickled_data)
+            s.sendto(pickled_data, addr)
+            #print("just pickled")
+            #else:
+                #break
+        #except:
+            #print("Exeception occurred within the threaded_client")
+            #break
+
+    #print("Lost connection")
+    #try:
+    #    del games[gameId]
+    #    print("Closing Game", gameId)
+    #except:
+    #    pass
+    #idCount -= 1
     #conn.close()
 
 

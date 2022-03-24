@@ -123,6 +123,7 @@ def main():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                n.send("Bye Server!")
                 run = False
                 pygame.quit()
 
