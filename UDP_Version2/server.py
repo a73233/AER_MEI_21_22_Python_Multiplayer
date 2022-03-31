@@ -65,7 +65,7 @@ while True:
             p = 1
 
         s.sendto(str.encode(str(p)),client_addr)
-        players_Hashmap[client_addr] = p
+        players_Hashmap[client_addr] = [p, gameId]
         continue
     
-    start_new_thread(threaded_client, (msg, client_addr, players_Hashmap[client_addr], gameId))
+    start_new_thread(threaded_client, (msg, client_addr, players_Hashmap[client_addr][0], players_Hashmap[client_addr][1]))
