@@ -45,6 +45,8 @@ def threaded_client(data, client_addr, p, gameId):
     #    pass
     #idCount -= 1
 
+players_Hashmap = {}
+
 while True:
     #conn, addr = s.accept()
     msg, client_addr = s.recvfrom(bufferSize*2)
@@ -63,6 +65,7 @@ while True:
             p = 1
 
         s.sendto(str.encode(str(p)),client_addr)
+        players_Hashmap[client_addr] = p
         continue
-
-    start_new_thread(threaded_client, (msg, client_addr, p, gameId))
+    
+    start_new_thread(threaded_client, (msg, client_addr, players_Hashmap[client_addr], gameId))
