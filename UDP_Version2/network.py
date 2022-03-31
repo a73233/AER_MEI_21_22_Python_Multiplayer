@@ -30,3 +30,9 @@ class Network:
         except socket.error as e:
             print(e)
 
+    def disconnect(self):
+        try:
+            self.client.send(str.encode("Bye Server!"))
+            self.connected = False
+        except:
+            pass

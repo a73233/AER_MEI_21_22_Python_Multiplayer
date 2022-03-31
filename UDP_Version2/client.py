@@ -124,6 +124,7 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
                 pygame.quit()
+                n.disconnect()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
@@ -135,8 +136,15 @@ def main():
                         else:
                             if not game.p2Went:
                                 n.send(btn.text)
+        try:
+            if game.online == False:
+                player = int(n.getP())
+                return
+            redrawWindow(win, game, player)
+        except:
+                run = False
+                return
 
-        redrawWindow(win, game, player)
 
 def menu_screen():
     run = True
@@ -156,8 +164,11 @@ def menu_screen():
                 run = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 run = False
-
     main()
 
 while True:
-    menu_screen()
+    try:
+        menu_screen()
+    except:
+        print("Closed.")
+        break
