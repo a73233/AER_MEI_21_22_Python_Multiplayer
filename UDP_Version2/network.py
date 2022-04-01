@@ -4,6 +4,8 @@ import settings
 
 bufferSize = settings.bufferSize*2
 
+global idGlobalCount
+
 class Network:
     def __init__(self):
         self.client = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM)
@@ -36,3 +38,14 @@ class Network:
             self.connected = False
         except:
             pass
+
+    def reconnect(self):
+        try:
+            self.client.connect(self.addr)
+            self.client.send(str.encode("Reconnecting!"))
+            self.p = self.client.recvfrom(bufferSize*2)[0].decode()
+        except:
+            pass
+
+    def getPnumber(self):
+        return self.p

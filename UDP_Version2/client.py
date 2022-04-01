@@ -138,7 +138,8 @@ def main():
                                 n.send(btn.text)
         try:
             if game.online == False:
-                player = int(n.getP())
+                n.reconnect()
+                player = int(n.getPnumber())
                 return
             redrawWindow(win, game, player)
         except:
@@ -162,6 +163,7 @@ def menu_screen():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 run = False
+                return
             if event.type == pygame.MOUSEBUTTONDOWN:
                 run = False
     main()

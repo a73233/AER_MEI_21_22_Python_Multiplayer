@@ -28,12 +28,6 @@ class Game:
 
     def connected(self):
         return self.ready
-
-    def game_disconnected(self):
-        self.online = False
-    
-    def game_connected(self):
-        self.online = True
         
     def bothWent(self):
         return self.p1Went and self.p2Went

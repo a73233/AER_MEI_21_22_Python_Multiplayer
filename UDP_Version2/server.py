@@ -28,38 +28,47 @@ idCount = 0
 def threaded_client(data, client_addr, p, gameId):
     global idCount
 
-       #Closing Connection
+    if (data == "Reconnecting!"):
+        print("Reconnecting, discarding:", client_addr, data)
+        s.sendto(str.encode(str(p)),client_addr)
+        players_Hashmap[client_addr] = [p, gameId]
+        idCount -= 1
+
     if (data == "Bye Server!"):
         print("Lost connection:", client_addr, data)
         gameId = players_Hashmap[client_addr][1]
 
         game = games[gameId]
-        game.game_disconnected()
+        game.online = False
 
         for player_addr in players_Hashmap:
             if players_Hashmap[player_addr][1] == gameId:
                 if player_addr != client_addr:
                     s.sendto(pickle.dumps(game), player_addr)
+                    #del players_Hashmap[player_addr]
+                    #del players_Hashmap[client_addr]
                     #s.sendto(str.encode("Player Left!"), player_addr)
                     #print("Lost connection:", player_addr, data) #tmp
         try:
-            del games[gameId]
+            #del games[gameId]
             print("Closing Game", gameId)
         except:
             pass
-        idCount -= 2
+        #idCount = [0, idCount - 2][idCount>0]
+        idCount -= 1
 
-    if gameId in games:
-        game = games[gameId]
-        game.game_connected()
+    else:
+        if gameId in games:
+            game = games[gameId]
+            game.online = True
 
-        if data:
-            if data == "reset":
-                game.resetWent()
-            elif data != "get":
-                game.play(p, data)
+            if data:
+                if data == "reset":
+                    game.resetWent()
+                elif data != "get":
+                    game.play(p, data)
 
-            s.sendto(pickle.dumps(game),client_addr)
+                s.sendto(pickle.dumps(game),client_addr)
 
 
 
@@ -75,6 +84,7 @@ while True:
 
     #Starting Connection
     if (msg == "Hello Server!"):
+        #idCount = len(players_Hashmap)
         print("Connected to:", client_addr, msg)
         idCount += 1
         p = 0
