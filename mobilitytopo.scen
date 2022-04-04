@@ -1,0 +1,204 @@
+#
+#nodes: 3, max time: 60.0000, max x: 900, max y: 600
+#
+#
+
+$node_(2) set X_360
+$node_(2) set Y_550
+$node_(2) set Z_0
+$node_(3) set X_454
+$node_(3) set Y_550
+$node_(3) set Z_0
+$node_(4) set X_553
+$node_(4) set Y_550
+$node_(4) set Z_0
+$ns_ at 1.00 $node_(2) setdest 366 550 0
+$ns_ at 1.00 $node_(3) setdest 454 542 0
+$ns_ at 1.00 $node_(4) setdest 547 550 0
+$ns_ at 2.00 $node_(2) setdest 372 550 0
+$ns_ at 2.00 $node_(3) setdest 454 534 0
+$ns_ at 2.00 $node_(4) setdest 541 550 0
+$ns_ at 3.00 $node_(2) setdest 378 550 0
+$ns_ at 3.00 $node_(3) setdest 454 526 0
+$ns_ at 3.00 $node_(4) setdest 535 550 0
+$ns_ at 4.00 $node_(2) setdest 384 550 0
+$ns_ at 4.00 $node_(3) setdest 454 518 0
+$ns_ at 4.00 $node_(4) setdest 529 550 0
+$ns_ at 5.00 $node_(2) setdest 390 550 0
+$ns_ at 5.00 $node_(3) setdest 454 510 0
+$ns_ at 5.00 $node_(4) setdest 523 550 0
+$ns_ at 6.00 $node_(2) setdest 396 550 0
+$ns_ at 6.00 $node_(3) setdest 454 502 0
+$ns_ at 6.00 $node_(4) setdest 517 550 0
+$ns_ at 7.00 $node_(2) setdest 402 550 0
+$ns_ at 7.00 $node_(3) setdest 454 494 0
+$ns_ at 7.00 $node_(4) setdest 511 550 0
+$ns_ at 8.00 $node_(2) setdest 408 550 0
+$ns_ at 8.00 $node_(3) setdest 454 486 0
+$ns_ at 8.00 $node_(4) setdest 505 550 0
+$ns_ at 9.00 $node_(2) setdest 414 550 0
+$ns_ at 9.00 $node_(3) setdest 454 478 0
+$ns_ at 9.00 $node_(4) setdest 499 550 0
+$ns_ at 10.00 $node_(2) setdest 420 550 0
+$ns_ at 10.00 $node_(3) setdest 454 470 0
+$ns_ at 10.00 $node_(4) setdest 493 550 0
+$ns_ at 11.00 $node_(2) setdest 426 550 0
+$ns_ at 11.00 $node_(3) setdest 454 462 0
+$ns_ at 11.00 $node_(4) setdest 487 550 0
+$ns_ at 12.00 $node_(2) setdest 432 550 0
+$ns_ at 12.00 $node_(3) setdest 454 454 0
+$ns_ at 12.00 $node_(4) setdest 481 550 0
+$ns_ at 13.00 $node_(2) setdest 438 550 0
+$ns_ at 13.00 $node_(3) setdest 454 446 0
+$ns_ at 13.00 $node_(4) setdest 475 550 0
+$ns_ at 14.00 $node_(2) setdest 444 550 0
+$ns_ at 14.00 $node_(3) setdest 454 438 0
+$ns_ at 14.00 $node_(4) setdest 469 550 0
+$ns_ at 15.00 $node_(2) setdest 450 550 0
+$ns_ at 15.00 $node_(3) setdest 454 430 0
+$ns_ at 15.00 $node_(4) setdest 463 550 0
+$ns_ at 16.00 $node_(2) setdest 456 550 0
+$ns_ at 16.00 $node_(3) setdest 454 422 0
+$ns_ at 16.00 $node_(4) setdest 457 550 0
+$ns_ at 17.00 $node_(2) setdest 462 550 0
+$ns_ at 17.00 $node_(3) setdest 454 414 0
+$ns_ at 17.00 $node_(4) setdest 451 550 0
+$ns_ at 18.00 $node_(2) setdest 468 550 0
+$ns_ at 18.00 $node_(3) setdest 454 406 0
+$ns_ at 18.00 $node_(4) setdest 445 550 0
+$ns_ at 19.00 $node_(2) setdest 474 550 0
+$ns_ at 19.00 $node_(3) setdest 454 398 0
+$ns_ at 19.00 $node_(4) setdest 439 550 0
+$ns_ at 20.00 $node_(2) setdest 480 550 0
+$ns_ at 20.00 $node_(3) setdest 454 390 0
+$ns_ at 20.00 $node_(4) setdest 433 550 0
+$ns_ at 21.00 $node_(2) setdest 488 540 0
+$ns_ at 21.00 $node_(3) setdest 444 399 0
+$ns_ at 21.00 $node_(4) setdest 424 542 0
+$ns_ at 22.00 $node_(2) setdest 496 530 0
+$ns_ at 22.00 $node_(3) setdest 434 408 0
+$ns_ at 22.00 $node_(4) setdest 415 534 0
+$ns_ at 23.00 $node_(2) setdest 504 520 0
+$ns_ at 23.00 $node_(3) setdest 424 417 0
+$ns_ at 23.00 $node_(4) setdest 406 526 0
+$ns_ at 24.00 $node_(2) setdest 512 510 0
+$ns_ at 24.00 $node_(3) setdest 414 426 0
+$ns_ at 24.00 $node_(4) setdest 397 518 0
+$ns_ at 25.00 $node_(2) setdest 520 500 0
+$ns_ at 25.00 $node_(3) setdest 404 435 0
+$ns_ at 25.00 $node_(4) setdest 388 510 0
+$ns_ at 26.00 $node_(2) setdest 528 490 0
+$ns_ at 26.00 $node_(3) setdest 394 444 0
+$ns_ at 26.00 $node_(4) setdest 379 502 0
+$ns_ at 27.00 $node_(2) setdest 536 480 0
+$ns_ at 27.00 $node_(3) setdest 384 453 0
+$ns_ at 27.00 $node_(4) setdest 370 494 0
+$ns_ at 28.00 $node_(2) setdest 544 470 0
+$ns_ at 28.00 $node_(3) setdest 374 462 0
+$ns_ at 28.00 $node_(4) setdest 361 486 0
+$ns_ at 29.00 $node_(2) setdest 552 460 0
+$ns_ at 29.00 $node_(3) setdest 364 471 0
+$ns_ at 29.00 $node_(4) setdest 352 478 0
+$ns_ at 30.00 $node_(2) setdest 560 450 0
+$ns_ at 30.00 $node_(3) setdest 354 480 0
+$ns_ at 30.00 $node_(4) setdest 343 470 0
+$ns_ at 31.00 $node_(2) setdest 550 450 0
+$ns_ at 31.00 $node_(3) setdest 363 480 0
+$ns_ at 31.00 $node_(4) setdest 343 460 0
+$ns_ at 32.00 $node_(2) setdest 540 450 0
+$ns_ at 32.00 $node_(3) setdest 372 480 0
+$ns_ at 32.00 $node_(4) setdest 343 450 0
+$ns_ at 33.00 $node_(2) setdest 530 450 0
+$ns_ at 33.00 $node_(3) setdest 381 480 0
+$ns_ at 33.00 $node_(4) setdest 343 440 0
+$ns_ at 34.00 $node_(2) setdest 520 450 0
+$ns_ at 34.00 $node_(3) setdest 390 480 0
+$ns_ at 34.00 $node_(4) setdest 343 430 0
+$ns_ at 35.00 $node_(2) setdest 510 450 0
+$ns_ at 35.00 $node_(3) setdest 399 480 0
+$ns_ at 35.00 $node_(4) setdest 343 420 0
+$ns_ at 36.00 $node_(2) setdest 500 450 0
+$ns_ at 36.00 $node_(3) setdest 408 480 0
+$ns_ at 36.00 $node_(4) setdest 343 410 0
+$ns_ at 37.00 $node_(2) setdest 490 450 0
+$ns_ at 37.00 $node_(3) setdest 417 480 0
+$ns_ at 37.00 $node_(4) setdest 343 400 0
+$ns_ at 38.00 $node_(2) setdest 480 450 0
+$ns_ at 38.00 $node_(3) setdest 426 480 0
+$ns_ at 38.00 $node_(4) setdest 343 390 0
+$ns_ at 39.00 $node_(2) setdest 470 450 0
+$ns_ at 39.00 $node_(3) setdest 435 480 0
+$ns_ at 39.00 $node_(4) setdest 343 380 0
+$ns_ at 40.00 $node_(2) setdest 460 450 0
+$ns_ at 40.00 $node_(3) setdest 444 480 0
+$ns_ at 40.00 $node_(4) setdest 343 370 0
+$ns_ at 41.00 $node_(2) setdest 465 450 0
+$ns_ at 41.00 $node_(3) setdest 437 480 0
+$ns_ at 41.00 $node_(4) setdest 343 379 0
+$ns_ at 42.00 $node_(2) setdest 470 450 0
+$ns_ at 42.00 $node_(3) setdest 430 480 0
+$ns_ at 42.00 $node_(4) setdest 343 388 0
+$ns_ at 43.00 $node_(2) setdest 475 450 0
+$ns_ at 43.00 $node_(3) setdest 423 480 0
+$ns_ at 43.00 $node_(4) setdest 343 397 0
+$ns_ at 44.00 $node_(2) setdest 480 450 0
+$ns_ at 44.00 $node_(3) setdest 416 480 0
+$ns_ at 44.00 $node_(4) setdest 343 406 0
+$ns_ at 45.00 $node_(2) setdest 485 450 0
+$ns_ at 45.00 $node_(3) setdest 409 480 0
+$ns_ at 45.00 $node_(4) setdest 343 415 0
+$ns_ at 46.00 $node_(2) setdest 490 450 0
+$ns_ at 46.00 $node_(3) setdest 402 480 0
+$ns_ at 46.00 $node_(4) setdest 343 424 0
+$ns_ at 47.00 $node_(2) setdest 495 450 0
+$ns_ at 47.00 $node_(3) setdest 395 480 0
+$ns_ at 47.00 $node_(4) setdest 343 433 0
+$ns_ at 48.00 $node_(2) setdest 500 450 0
+$ns_ at 48.00 $node_(3) setdest 388 480 0
+$ns_ at 48.00 $node_(4) setdest 343 442 0
+$ns_ at 49.00 $node_(2) setdest 505 450 0
+$ns_ at 49.00 $node_(3) setdest 381 480 0
+$ns_ at 49.00 $node_(4) setdest 343 451 0
+$ns_ at 50.00 $node_(2) setdest 510 450 0
+$ns_ at 50.00 $node_(3) setdest 374 480 0
+$ns_ at 50.00 $node_(4) setdest 343 460 0
+$ns_ at 51.00 $node_(2) setdest 515 450 0
+$ns_ at 51.00 $node_(3) setdest 367 480 0
+$ns_ at 51.00 $node_(4) setdest 343 469 0
+$ns_ at 52.00 $node_(2) setdest 520 450 0
+$ns_ at 52.00 $node_(3) setdest 360 480 0
+$ns_ at 52.00 $node_(4) setdest 343 478 0
+$ns_ at 53.00 $node_(2) setdest 525 450 0
+$ns_ at 53.00 $node_(3) setdest 353 480 0
+$ns_ at 53.00 $node_(4) setdest 343 487 0
+$ns_ at 54.00 $node_(2) setdest 530 450 0
+$ns_ at 54.00 $node_(3) setdest 346 480 0
+$ns_ at 54.00 $node_(4) setdest 343 496 0
+$ns_ at 55.00 $node_(2) setdest 535 450 0
+$ns_ at 55.00 $node_(3) setdest 339 480 0
+$ns_ at 55.00 $node_(4) setdest 343 505 0
+$ns_ at 56.00 $node_(2) setdest 540 450 0
+$ns_ at 56.00 $node_(3) setdest 332 480 0
+$ns_ at 56.00 $node_(4) setdest 343 514 0
+$ns_ at 57.00 $node_(2) setdest 545 450 0
+$ns_ at 57.00 $node_(3) setdest 325 480 0
+$ns_ at 57.00 $node_(4) setdest 343 523 0
+$ns_ at 58.00 $node_(2) setdest 550 450 0
+$ns_ at 58.00 $node_(3) setdest 318 480 0
+$ns_ at 58.00 $node_(4) setdest 343 532 0
+$ns_ at 59.00 $node_(2) setdest 555 450 0
+$ns_ at 59.00 $node_(3) setdest 311 480 0
+$ns_ at 59.00 $node_(4) setdest 343 541 0
+$ns_ at 60.00 $node_(2) setdest 560 450 0
+$ns_ at 60.00 $node_(3) setdest 304 480 0
+$ns_ at 60.00 $node_(4) setdest 343 550 0
+
+
+
+
+
+
+
+
+
+
