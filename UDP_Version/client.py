@@ -95,7 +95,6 @@ def main():
             game = n.send("get")
         except:
             run = False
-            #print("Couldn't get game", str(game))
             print("Couldn't get game")
             break
 
@@ -123,9 +122,9 @@ def main():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                n.send("Bye Server!")
                 run = False
                 pygame.quit()
+                n.disconnect()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
@@ -137,8 +136,17 @@ def main():
                         else:
                             if not game.p2Went:
                                 n.send(btn.text)
+        try:
+            if game.online == False:
+                #n.reconnect()
+                #player = int(n.getPnumber())
+                player = int(n.reconnect())
+                return
+            redrawWindow(win, game, player)
+        except:
+                run = False
+                return
 
-        redrawWindow(win, game, player)
 
 def menu_screen():
     run = True
@@ -156,10 +164,14 @@ def menu_screen():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 run = False
+                return
             if event.type == pygame.MOUSEBUTTONDOWN:
                 run = False
-
     main()
 
 while True:
-    menu_screen()
+    try:
+        menu_screen()
+    except:
+        print("Closed.")
+        break

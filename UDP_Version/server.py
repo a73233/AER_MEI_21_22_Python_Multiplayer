@@ -1,7 +1,8 @@
+from pydoc import cli
 import socket
 from _thread import *
 import pickle
-from traceback import print_tb
+from threading import Thread
 from game import Game
 import settings
 
@@ -19,68 +20,73 @@ except socket.error as e:
 #s.listen(2)
 print("UDP Server Started")
 
-#connected = set()
+connected = set()
 games = {}
 idCount = 0
 
 
-def threaded_client(msg, addr, p, gameId):
+def threaded_client(data, client_addr, p, gameId):
     global idCount
 
-        #while True:
-        #try:
-            #data = conn.recv(bufferSize*2).decode()
-    data = msg
+    if (data == "Reconnecting!"):
+        print("Reconnecting, discarding:", client_addr, data)
+        s.sendto(str.encode(str(p)),client_addr)
+        players_Hashmap[client_addr] = [p, gameId]
+        #idCount -= 1
 
-    if gameId in games:
+    if (data == "Bye Server!"):
+        print("Lost connection:", client_addr, data)
+        gameId = players_Hashmap[client_addr][1]
+
         game = games[gameId]
+        game.online = False
+        
+        for player_addr in players_Hashmap:
+            if players_Hashmap[player_addr][1] == gameId:
+                if player_addr != client_addr:
+                    s.sendto(pickle.dumps(game), player_addr)
+                    #del players_Hashmap[player_addr]
+                    #del players_Hashmap[client_addr]
+                    #s.sendto(str.encode("Player Left!"), player_addr)
+                    #print("Lost connection:", player_addr, data) #tmp
+        try:
+            #del games[gameId]
+            print("Closing Game", gameId)
+        except:
+            pass
+        #idCount = [0, idCount - 2][idCount>0]
+        #idCount -= 1
 
-        if data:   
-            if data == "Bye Server!":
-                try:
-                    del games[gameId]
-                    print("Closing Game", gameId)
-                except:
-                    pass
-                idCount -= 1
+    else:
+        if gameId in games:
+            game = games[gameId]
+            #game.online = True
 
-            elif data == "reset":
-                game.resetWent()
+            if data:
+                if data == "reset":
+                    game.resetWent()
+                elif data != "get":
+                    game.play(p, data)
 
-            elif data != "get":
-                game.play(p, data)
+                s.sendto(pickle.dumps(game),client_addr)
 
-            pickled_data = pickle.dumps(game)
-            #print(pickled_data)
-            s.sendto(pickled_data, addr)
-            #print("just pickled")
-            #else:
-                #break
-        #except:
-            #print("Exeception occurred within the threaded_client")
-            #break
 
-    #print("Lost connection")
-    #try:
-    #    del games[gameId]
-    #    print("Closing Game", gameId)
-    #except:
-    #    pass
-    #idCount -= 1
-    #conn.close()
 
+players_Hashmap = {}
 
 while True:
     #conn, addr = s.accept()
-    msg, addr = s.recvfrom(bufferSize*2)
-    msg = msg.decode()
-    
-    #else:
-        #print(msg)
+    try:
+        msg, client_addr = s.recvfrom(bufferSize*2)
+        msg = msg.decode()
+    except:
+        continue
 
+    #Starting Connection
     if (msg == "Hello Server!"):
-        print("Connected to:", addr[0], msg)
-        idCount += 1
+        #idCount = len(players_Hashmap)
+        print("Connected to:", client_addr, msg)
+        idCount = (idCount + 1)%100
         p = 0
         gameId = (idCount - 1)//2
         if idCount % 2 == 1:
@@ -90,8 +96,8 @@ while True:
             games[gameId].ready = True
             p = 1
 
-        s.sendto(repr(p).encode('utf-8'), addr) #send player number
+        players_Hashmap[client_addr] = [p, gameId]
+        s.sendto(str.encode(str(p)),client_addr)
         continue
-
-    #print("Started a new thread!")
-    start_new_thread(threaded_client, (msg, addr, p, gameId))
+    
+    start_new_thread(threaded_client, (msg, client_addr, players_Hashmap[client_addr][0], players_Hashmap[client_addr][1]))

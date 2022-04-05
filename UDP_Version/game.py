@@ -1,3 +1,6 @@
+from matplotlib.pyplot import disconnect
+
+
 class Game:
     def __init__(self, id):
         self.p1Went = False
@@ -7,7 +10,8 @@ class Game:
         self.moves = [None, None]
         self.wins = [0,0]
         self.ties = 0
-        
+        self.online = True
+
     def get_player_move(self, p):
         """
         :param p: [0,1]
@@ -24,7 +28,7 @@ class Game:
 
     def connected(self):
         return self.ready
-
+        
     def bothWent(self):
         return self.p1Went and self.p2Went
 
