@@ -12,14 +12,17 @@ class Network:
         self.server = settings.serverIP
         self.port = settings.serverPort
         self.addr = (self.server, self.port, 0, 0) #(address, port, flow info, scope id) 4-tuple for AF_INET6)
-        self.p = self.connect_network()
+        self.client.connect(self.addr)
+        self.p = -1
 
     def getP(self):
         return self.p
 
+    def setP(self, p):
+        self.p = p
+
     def connect_network(self):
         try:
-            self.client.connect(self.addr)
             self.client.send(str.encode("Hello Server!"))
             return self.client.recvfrom(bufferSize*2)[0].decode()
         except:
@@ -32,21 +35,16 @@ class Network:
         except socket.error as e:
             print(e)
 
-    def disconnect(self):
+    def disconnect_network(self):
         try:
             self.client.send(str.encode("Bye Server!"))
-            #self.connected = False
         except:
             pass
 
-    def reconnect(self):
+    def reconnect_network(self):
         try:
-            self.client.connect(self.addr)
             self.client.send(str.encode("Reconnecting!"))
-            self.p = self.client.recvfrom(bufferSize*2)[0].decode()
-            return self.p
+            self.setP(int(self.client.recvfrom(bufferSize*2)[0].decode()))
+            return self.getP()
         except:
             pass
-
-    def getPnumber(self):
-        return self.p

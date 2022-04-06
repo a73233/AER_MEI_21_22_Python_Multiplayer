@@ -1,13 +1,15 @@
 import pygame
 from network import Network
 import pickle
-pygame.font.init()
+import settings
 
+pygame.font.init()
 width = 700
 height = 700
 win = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Client")
 
+magicNumber = settings.magicNumber
 
 class Button:
     def __init__(self, text, x, y, color):
@@ -86,8 +88,24 @@ def main():
     run = True
     clock = pygame.time.Clock()
     n = Network()
-    player = int(n.getP())
-    print("You are player", player)
+    n.setP(int(n.connect_network()))
+    player = n.getP()
+    print("You are player:", player, " on Address:", n.client.getsockname())
+
+    while(player==magicNumber):
+        clock.tick(60)
+        win.fill((128, 128, 128))
+        font = pygame.font.SysFont(pygame.font.get_default_font(), 60)
+        text = font.render("Server Full, Try Again.", 1, (255,0,0))
+        win.blit(text, (100,200))
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                return
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                n.setP(int(n.connect_network()))
+                player = n.getP()
 
     while run:
         clock.tick(60)
@@ -118,13 +136,13 @@ def main():
 
             win.blit(text, (width/2 - text.get_width()/2, height/2 - text.get_height()/2))
             pygame.display.update()
-            pygame.time.delay(2000)
+            pygame.time.delay(1500)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
                 pygame.quit()
-                n.disconnect()
+                n.disconnect_network()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
@@ -138,9 +156,7 @@ def main():
                                 n.send(btn.text)
         try:
             if game.online == False:
-                #n.reconnect()
-                #player = int(n.getPnumber())
-                player = int(n.reconnect())
+                player = int(n.reconnect_network())
                 return
             redrawWindow(win, game, player)
         except:

@@ -9,6 +9,9 @@ import settings
 server = settings.serverIP
 port = settings.serverPort
 bufferSize = settings.bufferSize
+maxConnections = settings.maxConnections
+magicNumber = settings.magicNumber
+resetCounter = settings.resetCounter
 
 s = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM)
 
@@ -22,24 +25,21 @@ print("UDP Server Started")
 
 connected = set()
 games = {}
-#idCount = 0
+idCount = 0
 
 def threaded_client(data, client_addr, p, gameId):
     global idCount
     global players_Hashmap
 
     if (data == "Reconnecting!"):
-
         print("Reconnecting, discarding:", client_addr, data)
         s.sendto(str.encode(str(p)),client_addr)
-
         del players_Hashmap[client_addr]
         return
 
     if (data == "Bye Server!"):
         print("Lost connection:", client_addr, data)
         gameId = players_Hashmap[client_addr][1]
-
         game = games[gameId]
         game.online = False
         
@@ -65,6 +65,7 @@ def threaded_client(data, client_addr, p, gameId):
                 s.sendto(pickle.dumps(game),client_addr)
                 return
 
+
 players_Hashmap = {}
 
 while True:
@@ -75,14 +76,20 @@ while True:
     except:
         continue
 
-    #Starting Connection
     if (msg == "Hello Server!"):
-        print("Connected to:", client_addr, msg)
+        players_Hashmap_len = len(players_Hashmap)
 
-        idCount = len(players_Hashmap)+1
+        if(players_Hashmap_len+1>maxConnections):
+            s.sendto(str.encode(str(magicNumber)),client_addr)
+            print("this will print")
+            continue
+        print("this will not")
+
+        idCount = idCount%resetCounter + 1
+        print("Connected to:", client_addr, msg)
         p = 0
         gameId = (idCount-1)//2
-        
+
         if idCount%2 == 1:
             games[gameId] = Game(gameId)
             print("Creating a new game...")
@@ -94,5 +101,5 @@ while True:
         s.sendto(str.encode(str(p)),client_addr)
         continue
     
-    #print(idCount, "---" , len(players_Hashmap), "---", len(players_Hashmap.keys()) ,"---", len(players_Hashmap.values()))
+    #print(idCount, "---" , len(players_Hashmap))
     start_new_thread(threaded_client, (msg, client_addr, players_Hashmap[client_addr][0], players_Hashmap[client_addr][1]))

@@ -3,4 +3,7 @@ serverPort = 5555
 
 bufferSize = 2048
 
-maxConnections = 1000
+magicNumber = 1995
+maxConnections = 4
+
+resetCounter = 1000 + maxConnections
