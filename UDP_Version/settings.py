@@ -1,4 +1,4 @@
-serverIP = "::1" # IP DO SERVIDOR , alterar conforme
+serverIP = "2001:4::10" # IP DO SERVIDOR , alterar conforme
 serverPort = 5555
 
 bufferSize = 2048
