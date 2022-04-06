@@ -22,17 +22,19 @@ print("UDP Server Started")
 
 connected = set()
 games = {}
-idCount = 0
-
+#idCount = 0
 
 def threaded_client(data, client_addr, p, gameId):
     global idCount
+    global players_Hashmap
 
     if (data == "Reconnecting!"):
+
         print("Reconnecting, discarding:", client_addr, data)
         s.sendto(str.encode(str(p)),client_addr)
-        players_Hashmap[client_addr] = [p, gameId]
-        #idCount -= 1
+
+        del players_Hashmap[client_addr]
+        return
 
     if (data == "Bye Server!"):
         print("Lost connection:", client_addr, data)
@@ -45,22 +47,14 @@ def threaded_client(data, client_addr, p, gameId):
             if players_Hashmap[player_addr][1] == gameId:
                 if player_addr != client_addr:
                     s.sendto(pickle.dumps(game), player_addr)
-                    #del players_Hashmap[player_addr]
-                    #del players_Hashmap[client_addr]
-                    #s.sendto(str.encode("Player Left!"), player_addr)
-                    #print("Lost connection:", player_addr, data) #tmp
-        try:
-            #del games[gameId]
-            print("Closing Game", gameId)
-        except:
-            pass
-        #idCount = [0, idCount - 2][idCount>0]
-        #idCount -= 1
+
+        del players_Hashmap[client_addr]
+        print("Closing Game", gameId)
+        return
 
     else:
         if gameId in games:
             game = games[gameId]
-            #game.online = True
 
             if data:
                 if data == "reset":
@@ -69,8 +63,7 @@ def threaded_client(data, client_addr, p, gameId):
                     game.play(p, data)
 
                 s.sendto(pickle.dumps(game),client_addr)
-
-
+                return
 
 players_Hashmap = {}
 
@@ -84,12 +77,13 @@ while True:
 
     #Starting Connection
     if (msg == "Hello Server!"):
-        #idCount = len(players_Hashmap)
         print("Connected to:", client_addr, msg)
-        idCount = (idCount + 1)%100
+
+        idCount = len(players_Hashmap)+1
         p = 0
-        gameId = (idCount - 1)//2
-        if idCount % 2 == 1:
+        gameId = (idCount-1)//2
+        
+        if idCount%2 == 1:
             games[gameId] = Game(gameId)
             print("Creating a new game...")
         else:
@@ -100,4 +94,5 @@ while True:
         s.sendto(str.encode(str(p)),client_addr)
         continue
     
+    #print(idCount, "---" , len(players_Hashmap), "---", len(players_Hashmap.keys()) ,"---", len(players_Hashmap.values()))
     start_new_thread(threaded_client, (msg, client_addr, players_Hashmap[client_addr][0], players_Hashmap[client_addr][1]))
