@@ -81,9 +81,7 @@ while True:
 
         if(players_Hashmap_len+1>maxConnections):
             s.sendto(str.encode(str(magicNumber)),client_addr)
-            print("this will print")
             continue
-        print("this will not")
 
         idCount = idCount%resetCounter + 1
         print("Connected to:", client_addr, msg)

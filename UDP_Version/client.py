@@ -90,7 +90,6 @@ def main():
     n = Network()
     n.setP(int(n.connect_network()))
     player = n.getP()
-    print("You are player:", player, " on Address:", n.client.getsockname())
 
     while(player==magicNumber):
         clock.tick(60)
@@ -107,6 +106,8 @@ def main():
                 n.setP(int(n.connect_network()))
                 player = n.getP()
 
+    print("You are player:", player, " on Address:", n.client.getsockname())
+    
     while run:
         clock.tick(60)
         try:
