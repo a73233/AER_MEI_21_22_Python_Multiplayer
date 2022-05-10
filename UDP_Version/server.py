@@ -2,21 +2,41 @@ from pydoc import cli
 import socket
 from _thread import *
 import pickle
-from threading import Thread
+import threading
 from game import Game
 import settings
+import struct
 
-server = settings.serverIP
-port = settings.serverPort
+serverIP = settings.serverIP
+serverPort = settings.serverPort
 bufferSize = settings.bufferSize
 maxConnections = settings.maxConnections
 magicNumber = settings.magicNumber
 resetCounter = settings.resetCounter
 
+overlayPort=settings.overlayPort
+
 s = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM)
 
+portBind = ("", overlayPort, 0, 0)
+sock = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM)
+sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+sock.bind(portBind)
+
+'''
+# Allows address to be reused
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+# Allow messages from this socket to loop back for development
+s.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_MULTICAST_LOOP, True)
+
+# Construct message for joining multicast group
+mreq = struct.pack("16s15s".encode('utf-8'), socket.inet_pton(socket.AF_INET6, serverIP), (chr(0) * 16).encode('utf-8'))
+s.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_JOIN_GROUP, mreq)
+'''
+
 try:
-    s.bind((server, port, 0, 0))  #(address, port, flow info, scope id) 4-tuple for AF_INET6)
+    s.bind((serverIP, serverPort, 0, 0))  #(address, port, flow info, scope id) 4-tuple for AF_INET6)
 except socket.error as e:
     str(e)
 
@@ -65,8 +85,42 @@ def threaded_client(data, client_addr, p, gameId):
                 s.sendto(pickle.dumps(game),client_addr)
                 return
 
+def sendUdp(neigh, msg):
+    #sock = self.udpSock
+    sock.sendto(msg.encode('utf-8'), (neigh, overlayPort))
+    print("Sent", msg, "to", neigh)
+
+def listenUdp():
+    print("####### Server is listening #######")
+    while True:
+        data, address = sock.recvfrom(1024)
+        msg = data.decode('utf-8')
+        print("\n\n Received:", msg,"from",address[0], "\n\n")
+        
+        msg_list = msg.split(" ")
+
+        if msg_list[0] == "DISCOVER":
+            
+            if msg_list[2] == "GO":
+                msg_list[2] = "RETURN"
+                sender_ip = address[0]
+
+                # must add new source
+                if msg_list[1] == "NOIP": # one node away from server
+                    msg_list[1] = sender_ip
+                else: # can be DISCOVER <ip> OR DISCOVER <ip> GO ip2 ip3 ...
+                    msg_list.append(sender_ip)
+                
+                new_msg = " ".join(msg_list)
+
+                print("Message from", sender_ip)
+                print("Sending",new_msg,"to",sender_ip)
+                sendUdp(sender_ip, new_msg)
 
 players_Hashmap = {}
+
+
+threading.Thread(target=listenUdp).start()
 
 while True:
     #conn, addr = s.accept()

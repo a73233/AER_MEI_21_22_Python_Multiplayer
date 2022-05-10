@@ -2,6 +2,8 @@ import pygame
 from network import Network
 import pickle
 import settings
+from DTN_OL_client import DTN_OL_client
+import threading
 
 pygame.font.init()
 width = 700
@@ -10,6 +12,7 @@ win = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Client")
 
 magicNumber = settings.magicNumber
+
 
 class Button:
     def __init__(self, text, x, y, color):
@@ -84,10 +87,28 @@ def redrawWindow(win, game, p):
 
 
 btns = [Button("Rock", 50, 500, (0,0,0)), Button("Scissors", 250, 500, (255,0,0)), Button("Paper", 450, 500, (0,255,0))]
+
+def dc_gui_msg():
+    clock = pygame.time.Clock()
+    clock.tick(60)
+    win.fill((128, 128, 128))
+    font = pygame.font.SysFont(pygame.font.get_default_font(), 60)
+    text = font.render("Waiting for Server Contact", 1, (255,0,0))
+    win.blit(text, (100,200))
+    pygame.display.update()
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            return
 def main():
     run = True
     clock = pygame.time.Clock()
     n = Network()
+
+    while(n.tryContact()==False):
+        dc_gui_msg()
+        n.tryContact()
+
     n.setP(int(n.connect_network()))
     player = n.getP()
 
@@ -111,6 +132,9 @@ def main():
     while run:
         clock.tick(60)
         try:
+            while(n.tryContact()==False):
+                dc_gui_msg()
+                n.tryContact()
             game = n.send("get")
         except:
             run = False
@@ -121,6 +145,9 @@ def main():
             redrawWindow(win, game, player)
             pygame.time.delay(500)
             try:
+                while(n.tryContact()==False):
+                    dc_gui_msg()
+                    n.tryContact()
                 game = n.send("reset")
             except:
                 run = False
@@ -151,12 +178,21 @@ def main():
                     if btn.click(pos) and game.connected():
                         if player == 0:
                             if not game.p1Went:
+                                while(n.tryContact()==False):
+                                    dc_gui_msg()
+                                    n.tryContact()
                                 n.send(btn.text)
                         else:
                             if not game.p2Went:
+                                while(n.tryContact()==False):
+                                    dc_gui_msg()
+                                    n.tryContact()
                                 n.send(btn.text)
         try:
             if game.online == False:
+                while(n.tryContact()==False):
+                    dc_gui_msg()
+                    n.tryContact()
                 player = int(n.reconnect_network())
                 return
             redrawWindow(win, game, player)
@@ -186,9 +222,14 @@ def menu_screen():
                 run = False
     main()
 
+
+#DTN_OL_client_instance = DTN_OL_client()
+#DTN_OL_client_instance.start()
+
 while True:
     try:
         menu_screen()
     except:
         print("Closed.")
+        #DTN_OL_client_instance.cancel()
         break
