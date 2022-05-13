@@ -41,6 +41,8 @@ class Button:
 def redrawWindow(win, game, p):
     win.fill((128,128,128))
 
+
+
     if not(game.connected()):
         font = pygame.font.SysFont(pygame.font.get_default_font(), 80)
         text = font.render("Waiting for Player...", 1, (255,0,0), True)
@@ -89,25 +91,21 @@ def redrawWindow(win, game, p):
 btns = [Button("Rock", 50, 500, (0,0,0)), Button("Scissors", 250, 500, (255,0,0)), Button("Paper", 450, 500, (0,255,0))]
 
 def dc_gui_msg():
-    clock = pygame.time.Clock()
-    clock.tick(60)
     win.fill((128, 128, 128))
     font = pygame.font.SysFont(pygame.font.get_default_font(), 60)
     text = font.render("Waiting for Server Contact", 1, (255,0,0))
     win.blit(text, (100,200))
     pygame.display.update()
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            return
+
 def main():
     run = True
     clock = pygame.time.Clock()
     n = Network()
 
-    while(n.tryContact()==False):
+    has_contact = n.tryContactThreaded(timeout=2)
+    while(not has_contact):
         dc_gui_msg()
-        n.tryContact()
+        has_contact = n.tryContactThreaded(timeout=2)
 
     n.setP(int(n.connect_network()))
     player = n.getP()
@@ -130,11 +128,13 @@ def main():
     print("You are player:", player, " on Address:", n.client.getsockname())
     
     while run:
+        has_contact = n.tryContactThreaded(timeout=2)
+        while(not has_contact):
+            dc_gui_msg()
+            has_contact = n.tryContactThreaded(timeout=2)
+
         clock.tick(60)
         try:
-            while(n.tryContact()==False):
-                dc_gui_msg()
-                n.tryContact()
             game = n.send("get")
         except:
             run = False
@@ -145,9 +145,6 @@ def main():
             redrawWindow(win, game, player)
             pygame.time.delay(500)
             try:
-                while(n.tryContact()==False):
-                    dc_gui_msg()
-                    n.tryContact()
                 game = n.send("reset")
             except:
                 run = False
@@ -178,21 +175,12 @@ def main():
                     if btn.click(pos) and game.connected():
                         if player == 0:
                             if not game.p1Went:
-                                while(n.tryContact()==False):
-                                    dc_gui_msg()
-                                    n.tryContact()
                                 n.send(btn.text)
                         else:
                             if not game.p2Went:
-                                while(n.tryContact()==False):
-                                    dc_gui_msg()
-                                    n.tryContact()
                                 n.send(btn.text)
         try:
             if game.online == False:
-                while(n.tryContact()==False):
-                    dc_gui_msg()
-                    n.tryContact()
                 player = int(n.reconnect_network())
                 return
             redrawWindow(win, game, player)

@@ -6,6 +6,7 @@ import threading
 from game import Game
 import settings
 import struct
+import subprocess
 
 serverIP = settings.serverIP
 serverPort = settings.serverPort
@@ -50,6 +51,10 @@ idCount = 0
 def threaded_client(data, client_addr, p, gameId):
     global idCount
     global players_Hashmap
+
+    has_contact = tryContactClient(client_addr[0])
+    while(has_contact==False):
+        has_contact = tryContactClient(client_addr[0])
 
     if (data == "Reconnecting!"):
         print("Reconnecting, discarding:", client_addr, data)
@@ -116,6 +121,19 @@ def listenUdp():
                 print("Message from", sender_ip)
                 print("Sending",new_msg,"to",sender_ip)
                 sendUdp(sender_ip, new_msg)
+
+
+def tryContactClient(IP_to_Contact):
+    #print(f'Trying to Contact Address: {IP_to_Contact}')
+    try:
+        proc = subprocess.Popen(
+            ['ping', '-q', '-c', '1', '-w', '1000', '-W', '1000', IP_to_Contact],
+            stdout=subprocess.DEVNULL)
+        proc.wait()
+        return proc.returncode == 0
+    except subprocess.error as e:
+        print(e)
+
 
 players_Hashmap = {}
 

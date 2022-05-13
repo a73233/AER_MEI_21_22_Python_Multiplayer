@@ -24,6 +24,8 @@ class Network:
         self.p = -1
         self.canContact = False
 
+        self.process = None
+
     def getP(self):
         return self.p
 
@@ -39,19 +41,39 @@ class Network:
 
     #         ret = os.system(f"ping -6 -c 1 -w 1000 -W 1000 {self.server}")
 
+
+    def tryContactThreaded(self, timeout):
+            def target():
+                #print 'Thread started'
+                self.process = subprocess.Popen(
+                    ['ping', '-q', '-c', '1', '-w', '1000', '-W', '1000', self.server],
+                    stdout=subprocess.DEVNULL)
+                self.process.communicate()
+                #print 'Thread finished'
+
+            thread = threading.Thread(target=target)
+            thread.start()
+
+            thread.join(timeout)
+            if thread.is_alive():
+                #print 'Terminating process'
+                self.process.terminate()
+                thread.join()
+            #print self.process.returncode
+            return self.process.returncode == 0
+        
     def tryContact(self):
         try:
             proc = subprocess.Popen(
                 ['ping', '-q', '-c', '1', '-w', '1000', '-W', '1000', self.server],
                 stdout=subprocess.DEVNULL)
-            proc.wait()
-            if proc.returncode == 0:
-                self.canContact = True
-            else:
-                self.canContact = False
+            proc.wait(timeout=3)
+            return proc.returncode == 0
+            #     self.canContact = True
+            # else:
+            #     self.canContact = False
         except subprocess.error as e:
             print(e)
-        return self.canContact
 
     def send(self, data):
         try:
